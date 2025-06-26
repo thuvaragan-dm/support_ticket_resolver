@@ -1,0 +1,36 @@
+{
+  "framework": "adk",
+  "blueprint_name": "support_ticket_resolver",
+  "architecture_file_path": "https://github.com/deepmodel-ai/dm-blue-print/blob/main/support_ticket_resolver/workflow/main.py",
+  "description": "A multi-agent system that classifies support tickets and drafts responses using a knowledge base.",
+  "overview": "The 'support_ticket_resolver' blueprint streamlines customer service by automating the support ticket handling process. It starts with the `ticket_classifier`, which categorizes incoming tickets into types such as billing, technical, or general. Based on this classification, the `kb_retriever` agent searches the internal knowledge base to find the most relevant article or troubleshooting information. The `ticket_responder` then drafts a customized response to the customer using the classification and retrieved content. This automation improves response time, consistency, and customer satisfaction while reducing manual workload for support teams.",
+  "secrets": [
+    {
+      "key": "OPENAI_API_KEY",
+      "description": "Used for classification and answer generation",
+      "required": true
+    }
+  ],
+  "agents": [
+    {
+      "name": "ticket_classifier",
+      "description": "Classifies the type of support ticket (billing, technical, general)."
+    },
+    {
+      "name": "kb_retriever",
+      "description": "Searches the knowledge base for relevant articles."
+    },
+    {
+      "name": "ticket_responder",
+      "description": "Drafts a support response using classification and KB results."
+    }
+  ],
+  "graph": {
+    "edges": [
+      { "from": "start", "to": "ticket_classifier" },
+      { "from": "ticket_classifier", "to": "kb_retriever" },
+      { "from": "kb_retriever", "to": "ticket_responder" },
+      { "from": "ticket_responder", "to": "end" }
+    ]
+  }
+}
